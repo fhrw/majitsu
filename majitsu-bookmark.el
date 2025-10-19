@@ -10,6 +10,10 @@
   "move the bookmake NAME to current revision"
   (majitsu--call "b" "m" name "--allow-backwards"))
 
+(defun majitsu--render-bookmark (bookmark)
+  "Render the given BOOKMARK plist as a string."
+  (format "%s  (%s)" (plist-get bookmark :name) (plist-get bookmark :changeid)))
+
 (defun majitsu--parse-bookmark (line)
   "Parse the given LINE (string) into a plist."
   (list
@@ -28,7 +32,7 @@
     (car (cdr split))))
 
 (defun majitsu--extract-commit-sha (line)
-  "Extract the commit SHA from LINE (string)."
+  "Extract the commit-sha from LINE (string)."
   (let ((split (string-split line " " nil)))
     (car (cdr (cdr split)))))
 
