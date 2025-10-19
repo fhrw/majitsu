@@ -1,9 +1,14 @@
 (require 'majitsu-process)
+(require 'majitsu-render)
 
 (defun majitsu--bookmarks ()
   "Get the currently tracked bookmarks as a bookmark plist."
   (let ((lines (majitsu--lines "b" "l")))
     (mapcar #'majitsu--parse-bookmark lines)))
+
+(defun majitsu--move-bookmark (name)
+  "move the bookmake NAME to current revision"
+  (majitsu--call "b" "m" name "--allow-backwards"))
 
 (defun majitsu--parse-bookmark (line)
   "Parse the given LINE (string) into a plist."
@@ -26,9 +31,6 @@
   "Extract the commit SHA from LINE (string)."
   (let ((split (string-split line " " nil)))
     (car (cdr (cdr split)))))
-
-(majitsu--lines "b" "l")
-(majitsu--bookmarks)
 
 (provide 'majitsu-bookmark)
 ;;; majitsu-bookmark.el ends here
