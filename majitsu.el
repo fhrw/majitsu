@@ -1,6 +1,7 @@
 (require 'majitsu-process)
 (require 'majitsu-bookmark)
 (require 'majitsu-render)
+(require 'majitsu-state)
 
 (defun majitsu ()
   "Entrypoint to Majitsu!"
