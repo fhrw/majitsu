@@ -6,9 +6,36 @@
   (let ((lines (majitsu--lines "b" "l")))
     (mapcar #'majitsu--parse-bookmark lines)))
 
+(defun majitsu--bookmarks-alist ()
+  "Return an alist of bookmark display strings to bookmark plists."
+  (mapcar (lambda (bm)
+            (cons (majitsu--render-bookmark bm) bm))
+          (majitsu--bookmarks)))
+
+(defun majitsu--prompt-for-bookmark (prompt)
+  "Prompt for a bookmark using completing-read and return the plist."
+  (let* ((alist (majitsu--bookmark-alist))
+         (choice (completing-read prompt alist)))
+    (alist-get choice alist nil nil #'string=)))
+
 (defun majitsu--move-bookmark (name)
   "move the bookmake NAME to current revision"
   (majitsu--call "b" "m" name "--allow-backwards"))
+
+(defun majitsu-rebase-bookmark-interactive ()
+  (let ((selected (majitsu--prompt-for-bookmark "Bookmark to rebase: "))
+	(target (majitsu--prompt-for-bookmark "Bookmark to rebase onto: ")))
+    (majitsu--rebase-bookmark (plist-get selected :name) (plist-get target :name))))
+
+(defun majitsu--rebase-bookmark (selected target)
+  "rebase SELECTED bookmark (whole branch) onto TARGET"
+  (majitsu--call
+   "rebase"
+   "-r"
+   (format "ancestors(\"%s\") & ~ancestors(\"%s\")" selected target)
+   "-d"
+   target  
+   "--skip-emptied"))
 
 (defun majitsu--render-bookmark (bookmark)
   "Render the given BOOKMARK plist as a string."
