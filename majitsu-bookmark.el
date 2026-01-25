@@ -15,7 +15,7 @@
 (defun majitsu-move-bookmark-to-current ()
   "Prompt for a bookmark and move it to the current position."
   (interactive)
-  (majitsu--move-bookmark (plist-get (majitsu--prompt-for-bookmark "Bookmark to move: ") :name)))
+  (majitsu--move-bookmark (majitsu--prompt-for-bookmark "Bookmark to move: ")))
 
 (defun majitsu-push-bookmark ()
   "Prompt for a bookmark and push it to the remote."
@@ -43,9 +43,9 @@
          (choice (completing-read prompt alist)))
     (alist-get choice alist nil nil #'string=)))
 
-(defun majitsu--move-bookmark (name)
-  "move the bookmake NAME to current revision"
-  (majitsu--call "b" "m" name "--allow-backwards"))
+(defun majitsu--move-bookmark (bookmark)
+  "move the BOOKMARK to current revision"
+  (majitsu--call "b" "m" (plist-get bookmark :name) "--allow-backwards"))
 
 (defun majitsu--push-bookmark (bookmark)
   "Push the BOOKMARK to the remote."
