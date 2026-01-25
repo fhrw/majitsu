@@ -9,6 +9,10 @@
   (let ((lines (majitsu--lines "log" "-T" (majitsu--machine-log-template) "--no-graph")))
     (mapcar #'majitsu--parse-log-line (mapcar #'read lines))))
 
+(defun majitsu--current-revision ()
+  "Get the current revision as a lisp structure."
+  (car (majitsu--log-parsed)))
+
 (defun majitsu--parse-log-line (lst)
   "Parse the given list of strings into a plist"
   (cl-destructuring-bind
