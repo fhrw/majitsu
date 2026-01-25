@@ -23,6 +23,7 @@
   (majitsu--call "b" "m" name "--allow-backwards"))
 
 (defun majitsu-rebase-bookmark-interactive ()
+  (interactive)
   (let ((selected (majitsu--prompt-for-bookmark "Bookmark to rebase: "))
 	(target (majitsu--prompt-for-bookmark "Bookmark to rebase onto: ")))
     (majitsu--rebase-bookmark (plist-get selected :name) (plist-get target :name))))
