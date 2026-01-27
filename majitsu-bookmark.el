@@ -39,7 +39,7 @@
 
 (defun majitsu--prompt-for-bookmark (prompt)
   "Prompt for a bookmark using completing-read and return the plist."
-  (let* ((alist (majitsu--bookmark-alist))
+  (let* ((alist (majitsu--bookmarks-alist))
          (choice (completing-read prompt alist)))
     (alist-get choice alist nil nil #'string=)))
 
