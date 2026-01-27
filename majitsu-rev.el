@@ -1,11 +1,17 @@
 (require 'majitsu-process)
 (require 'majitsu-log)
+(require 'majitsu-describe)
 
-(defvar majitsu--desc-buffer-name "*majitsu-description*"
-  "Buffer name used for editing majitsu revision descriptions.")
-
-(defun majitsu--desc-buffer ()
-  (get-buffer-create majitsu--desc-buffer-name))
+(defun majitsu-describe-current-rev-buffer ()
+  "Edit the existing description in a buffer."
+  (interactive)
+  (let* ((current-desc (plist-get (majitsu--current-revision) :desc)))
+    (majitsu-edit-desc
+     current-desc
+     :finish (lambda (msg)
+	       (majitsu--call "desc" "-m" msg))
+     :cancel (lambda ()
+	       (message "Description edit cancelled.")))))
 
 (defun majitsu-desc-current-rev ()
   "Add a description to the current commit."
