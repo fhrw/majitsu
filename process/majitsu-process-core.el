@@ -21,5 +21,5 @@
 (defun majitsu--process-buffer ()
   (get-buffer-create majitsu--process-buffer-name))
 
-(provide 'majitsu-process)
-;;; majitsu-process.el ends here
+(provide 'majitsu-process-core)
+;;; majitsu-process-core.el ends here

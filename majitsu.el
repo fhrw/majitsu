@@ -1,20 +1,20 @@
 (require 'majitsu-process)
-(require 'majitsu-bookmark)
 (require 'majitsu-render)
-(require 'majitsu-state)
+(require 'majitsu-model)
+(require 'majitsu-update)
 
 (defun majitsu ()
   "Entrypoint to Majitsu!"
   (interactive)
-  (let ((state (list :bookmarks (majitsu--bookmarks)))
-	(st (majitsu--lines "st"))
-	(log (majitsu--lines "log"))
-	(buf (majitsu--process-buffer)))
+  (let ((buf (majitsu--process-buffer)))
     (with-current-buffer buf
-      (let ((inhibit-read-only t)
-	    (contents (append (mapcar #'majitsu--render-bookmark (plist-get state :bookmarks)) '("-------") st '("-------") log)))
+      (let ((inhibit-read-only t))
 	(majitsu-mode)
-	(majitsu--render-lines-to-buffer contents buf)))))
+	(majitsu-init)
+	(majitsu--dispatch 'refresh)
+	(majitsu--render majitsu--model)))))
+
+(defvar-local majitsu--model nil)
 
 (define-derived-mode majitsu-mode special-mode "Majitsu"
   "Major mode for majitsu."
