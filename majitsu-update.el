@@ -9,6 +9,12 @@ Return (NEW-MODEL EFFECTS)."
      (list model
            (list '(:bookmarks) '(:status) '(:log))))
 
+    ('next-node
+     (list (majitsu--advance-cursor model) nil))
+
+    ('prev-node
+     (list (majitsu--reverse-cursor model) nil))
+
     (`(bookmarks-result ,bookmarks)
      (list (majitsu--add-nodes (majitsu--decrement-pending model)
 			       (cons (majitsu--heading-node "Bookmarks")
@@ -59,20 +65,7 @@ Return (NEW-MODEL EFFECTS)."
     ;; status handler
     (`(:status)
      (majitsu--dispatch
-      `(status-result ,(majitsu--status))))
-    ))
-
-(defun majitsu--decrement-pending (model)
-  (let ((pending (plist-get model :pending)))
-    (plist-put model :pending (max 0 (1- pending)))))
-
-(defun majitsu--increment-pending (model num-effects)
-  (plist-put model
-	     :pending
-	     (+
-	      (or (plist-get model :pending) 0)
-	      num-effects)))
-
+      `(status-result ,(majitsu--status))))))
 
 (provide 'majitsu-update)
 ;; majitsu-update.el ends here
