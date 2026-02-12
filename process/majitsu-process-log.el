@@ -1,4 +1,4 @@
-(require 'majitsu-process-core.el)
+(require 'majitsu-process-core)
 
 (defun majitsu--log ()
   "Get jj log as a string"
