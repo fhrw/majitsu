@@ -1,51 +1,51 @@
 (require 'cl-lib)
 
-(defvar-local majitsu--edit-finish-fn nil
+(defvar-local maju--edit-finish-fn nil
   "Function called with the final text when editing finishes.")
 
-(defvar-local majitsu--edit-cancel-fn nil
+(defvar-local maju--edit-cancel-fn nil
   "Function called when editing is cancelled.")
 
-(defvar majitsu-describe-mode-map
+(defvar maju-describe-mode-map
   (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "C-c C-c") #'majitsu--edit-finish)
-    (define-key map (kbd "C-c C-k") #'majitsu--edit-cancel)
+    (define-key map (kbd "C-c C-c") #'maju--edit-finish)
+    (define-key map (kbd "C-c C-k") #'maju--edit-cancel)
     map))
 
-(define-derived-mode majitsu-describe-mode text-mode "Majitsu-describe"
-  "Major mode for editing Majitsu descriptions.")
+(define-derived-mode maju-describe-mode text-mode "Majitsu-describe"
+  "Major mode for editing Maju descriptions.")
 
-(defun majitsu--edit-finish ()
-  "Finish the current Majitsu editing session."
+(defun maju--edit-finish ()
+  "Finish the current Maju editing session."
   (interactive)
   (let ((text (string-trim (buffer-string)))
-        (fn majitsu--edit-finish-fn))
+        (fn maju--edit-finish-fn))
     (when fn
       (funcall fn text))
     (kill-buffer)))
 
-(defun majitsu--edit-cancel ()
-  "Cancel the current Majitsu editing session."
+(defun maju--edit-cancel ()
+  "Cancel the current Maju editing session."
   (interactive)
-  (when majitsu--edit-cancel-fn
-    (funcall majitsu--edit-cancel-fn))
+  (when maju--edit-cancel-fn
+    (funcall maju--edit-cancel-fn))
   (kill-buffer))
 
-(cl-defun majitsu-edit-desc (initial &key finish cancel)
+(cl-defun maju-edit-desc (initial &key finish cancel)
   "Edit INITIAL in a describe session.
 
   FINISH is called with the final text.
   CANCEL is called if editing is aborted."
 
-  (let ((buf (get-buffer-create "*Majitsu Describe*")))
+  (let ((buf (get-buffer-create "*Maju Describe*")))
     (with-current-buffer buf
       (erase-buffer)
       (insert (or initial ""))
       (goto-char (point-min))
-      (majitsu-describe-mode)
-      (setq-local majitsu--edit-finish-fn finish)
-      (setq-local majitsu--edit-cancel-fn cancel))
+      (maju-describe-mode)
+      (setq-local maju--edit-finish-fn finish)
+      (setq-local maju--edit-cancel-fn cancel))
     (pop-to-buffer buf)))
 
 (provide 'majitsu-describe)
-;;; majitsu-describe.el ends here
+;;; maju-describe.el ends here

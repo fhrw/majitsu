@@ -1,19 +1,19 @@
 (require 'majitsu-process-core)
 
-(defun majitsu--log ()
+(defun maju--log ()
   "Get jj log as a string"
-  (majitsu--call "log"))
+  (maju--call "log"))
 
-(defun majitsu--log-parsed ()
+(defun maju--log-parsed ()
   "Get the log as lisp data"
-  (let ((lines (majitsu--lines "log" "-T" (majitsu--machine-log-template) "--no-graph")))
-    (mapcar #'majitsu--parse-log-line (mapcar #'read lines))))
+  (let ((lines (maju--lines "log" "-T" (majitsu--machine-log-template) "--no-graph")))
+    (mapcar #'maju--parse-log-line (mapcar #'read lines))))
 
-(defun majitsu--current-revision ()
+(defun maju--current-revision ()
   "Get the current revision as a lisp structure."
-  (car (majitsu--log-parsed)))
+  (car (maju--log-parsed)))
 
-(defun majitsu--parse-log-line (lst)
+(defun maju--parse-log-line (lst)
   "Parse the given list of strings into a plist"
   (cl-destructuring-bind
       (changeid name email date time desc)
@@ -27,7 +27,7 @@
      :timestamp time
      :desc desc)))
 
-(defun majitsu--machine-log-template ()
+(defun maju--machine-log-template ()
   "The template string for log formatting to make machine readable.
 Note, that in the regular log view, each of these lines will
 correspond to TWO lines from the regular view."
@@ -46,7 +46,7 @@ correspond to TWO lines from the regular view."
 	++ ')\n'"
   )
 
-(majitsu--lines "log" "-T" (majitsu--machine-log-template) "--no-graph")
+(maju--lines "log" "-T" (majitsu--machine-log-template) "--no-graph")
 
 (provide 'majitsu-process-log)
 ;; majitsu-process-log.el ends here

@@ -1,25 +1,25 @@
-(defcustom majitsu-jj-executable
+(defcustom maju-jj-executable
   (executable-find "jj")
   "The JJ executable used on the local host"
-  :package-version '(majitsu . "0.1")
-  :group 'majitsu-process
+  :package-version '(maju . "0.1")
+  :group 'maju-process
   :type 'string)
 
-(defun majitsu--call (&rest args)
+(defun maju--call (&rest args)
   "Run jj with ARGS and return its stdout as a string."
   (with-temp-buffer
-    (apply #'process-file majitsu-jj-executable nil (current-buffer) nil args)
+    (apply #'process-file maju-jj-executable nil (current-buffer) nil args)
     (string-trim (buffer-string))))
 
-(defun majitsu--lines (&rest args)
+(defun maju--lines (&rest args)
   "Return jj output as a list of lines."
-  (split-string (apply #'majitsu--call args) "\n" t))
+  (split-string (apply #'maju--call args) "\n" t))
 
-(defvar majitsu--process-buffer-name "*majitsu*"
-  "Buffer name for Majitsu process output.")
+(defvar maju--process-buffer-name "*majitsu*"
+  "Buffer name for Maju process output.")
 
-(defun majitsu--process-buffer ()
-  (get-buffer-create majitsu--process-buffer-name))
+(defun maju--process-buffer ()
+  (get-buffer-create maju--process-buffer-name))
 
 (provide 'majitsu-process-core)
 ;;; majitsu-process-core.el ends here

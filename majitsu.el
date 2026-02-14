@@ -10,9 +10,9 @@
     (with-current-buffer buf
       (let ((inhibit-read-only t))
 	(majitsu-mode)
-	(majitsu-init)
-	(majitsu--dispatch 'refresh)
-	(majitsu--render majitsu--model)))))
+	(maju-init)
+	(maju--dispatch 'refresh)
+	(maju--render majitsu--model)))))
 
 (defvar-local majitsu--model nil)
 
